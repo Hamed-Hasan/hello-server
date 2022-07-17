@@ -13,7 +13,7 @@ app.use(express.json());
 
 
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = "mongodb+srv://finalSetup:FNcfxgtuCXw7YUv4@cluster0.ojujfmz.mongodb.net/?retryWrites=true&w=majority";
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.ojujfmz.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
 
@@ -24,6 +24,15 @@ async function run() {
     const result = await userCollection.find({}).toArray()
     res.send(result)
 })
+
+
+
+const doc = {
+    title: "Record of a Shriveled Datum",
+    content: "No bytes, no problem. Just insert a document, in MongoDB",
+  }
+  const result = await userCollection.insertOne(doc);
+  console.log(`A document was inserted with the _id: ${result.insertedId}`);
     } finally {
       // Ensures that the client will close when you finish/error
     //   await client.close();
